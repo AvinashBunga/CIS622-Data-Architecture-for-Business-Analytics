@@ -1,0 +1,144 @@
+CREATE TABLE Player (
+  PlayerID INT NOT NULL AUTO_INCREMENT,
+  PlayerName VARCHAR(50) NOT NULL,
+  PRIMARY KEY (PlayerID)
+);
+
+CREATE TABLE Team (
+  TeamID INT NOT NULL AUTO_INCREMENT,
+  TeamName VARCHAR(50) NOT NULL,
+  PRIMARY KEY (TeamID)
+);
+
+CREATE TABLE Wicket (
+  WicketTypeID INT NOT NULL AUTO_INCREMENT,
+  Bowled INT NOT NULL,
+  Caught INT NOT NULL,
+  Runout INT NOT NULL,
+  LBW INT NOT NULL,
+  Other INT NOT NULL,
+  PRIMARY KEY (WicketTypeID)
+);
+
+CREATE TABLE MatchPlayers (
+  MatchPlayersID INT NOT NULL AUTO_INCREMENT,
+  MatchID INT NOT NULL,
+  PlayerID INT NOT NULL,
+  TeamID INT NOT NULL,
+  PRIMARY KEY (MatchPlayersID),
+  FOREIGN KEY (PlayerID) REFERENCES Player(PlayerID),
+  FOREIGN KEY (TeamID) REFERENCES Team(TeamID)
+);
+
+CREATE TABLE BattingCard (
+  BattingCardID INT NOT NULL AUTO_INCREMENT,
+  MatchID INT NOT NULL,
+  PlayerID INT NOT NULL,
+  TeamID INT NOT NULL,
+  WicketTypeID INT,
+  BattingStyle VARCHAR(50) NOT NULL,
+  RunsScored INT NOT NULL,
+  BallsFaced INT NOT NULL,
+  Fours INT NOT NULL,
+  Sixes INT NOT NULL,
+  StrikeRate DECIMAL(5,2),
+  IsOut BOOLEAN NOT NULL,
+  Innings INT NOT NULL,
+  PRIMARY KEY (BattingCardID),
+  FOREIGN KEY (PlayerID) REFERENCES Player(PlayerID),
+  FOREIGN KEY (TeamID) REFERENCES Team(TeamID),
+  FOREIGN KEY (WicketTypeID) REFERENCES Wicket(WicketTypeID)
+);
+
+CREATE TABLE BowlingCard (
+  BowlingCardID INT NOT NULL AUTO_INCREMENT,
+  PlayerID INT NOT NULL,
+  MatchID INT NOT NULL,
+  TeamID INT NOT NULL,
+  BowlingOppositionTeamID INT NOT NULL,
+  Innings TINYINT NOT NULL,
+  OversBalled SMALLINT NOT NULL,
+  TotalBalls SMALLINT NOT NULL,
+  Maidens SMALLINT NOT NULL,
+  RunsConceded SMALLINT NOT NULL,
+  WicketsTaken SMALLINT NOT NULL,
+  EconomyRate DECIMAL(4,2) NOT NULL,
+  DotBalls SMALLINT NOT NULL,
+  FoursGiven SMALLINT NOT NULL,
+  SixesGiven SMALLINT NOT NULL,
+  WidesBowled SMALLINT NOT NULL,
+  NoBalls SMALLINT NOT NULL,
+  PRIMARY KEY (BowlingCardID),
+  FOREIGN KEY (PlayerID) REFERENCES Player(PlayerID),
+  FOREIGN KEY (TeamID) REFERENCES Team(TeamID),
+  FOREIGN KEY (BowlingOppositionTeamID) REFERENCES Team(TeamID)
+);
+
+CREATE TABLE Referee (
+  RefereeID INT NOT NULL AUTO_INCREMENT,
+  RefereeName VARCHAR(50) NOT NULL,
+  PRIMARY KEY (RefereeID)
+);
+
+CREATE TABLE Umpire (
+  UmpireID INT NOT NULL AUTO_INCREMENT,
+  UmpireName VARCHAR(50) NOT NULL,
+  PRIMARY KEY (UmpireID)
+);
+
+CREATE TABLE Series (
+  SeriesID INT NOT NULL AUTO_INCREMENT,
+  SeriesName VARCHAR(50) NOT NULL,
+  PRIMARY KEY (SeriesID)
+);
+
+CREATE TABLE Venue (
+  VenueID INT NOT NULL AUTO_INCREMENT,
+  VenueStadium VARCHAR(50) NOT NULL,
+  VenueCity VARCHAR(50) NOT NULL,
+  VenueCountry VARCHAR(50) NOT NULL,
+  PRIMARY KEY (VenueID)
+);
+
+CREATE TABLE `Match` (
+  MatchID INT NOT NULL AUTO_INCREMENT,
+  RefereeID INT NOT NULL,
+  UmpireID INT NOT NULL,
+  SeriesID INT NOT NULL,
+  VenueID INT NOT NULL,
+  Team1ID INT NOT NULL,
+  Team2ID INT NOT NULL,
+  TossWinnerTeamID INT NOT NULL,
+  MatchWinnerTeamID INT NOT NULL,
+  TossChoice VARCHAR(50),
+  MatchResult VARCHAR(50),
+  ManOfTheMatch VARCHAR(50),
+  DebutPlayers VARCHAR(50),
+  MatchName VARCHAR(50),
+  MatchNo INT NOT NULL,
+  MatchDate DATE,
+  MatchFormat VARCHAR(50),
+  PRIMARY KEY (MatchID),
+  FOREIGN KEY (RefereeID) REFERENCES Referee(RefereeID),
+  FOREIGN KEY (UmpireID) REFERENCES Umpire(UmpireID),
+  FOREIGN KEY (SeriesID) REFERENCES Series(SeriesID),
+  FOREIGN KEY (VenueID) REFERENCES Venue(VenueID),
+  FOREIGN KEY (Team1ID) REFERENCES Team(TeamID),
+  FOREIGN KEY (Team2ID) REFERENCES Team(TeamID),
+  FOREIGN KEY (TossWinnerTeamID) REFERENCES Team(TeamID),
+  FOREIGN KEY (MatchWinnerTeamID) REFERENCES Team(TeamID)
+);
+
+CREATE TABLE TeamCaptain (
+  CaptainID INT NOT NULL AUTO_INCREMENT,
+  MatchID INT NOT NULL,
+  PlayerID INT NOT NULL,
+  TeamID INT NOT NULL,
+  PRIMARY KEY (CaptainID),
+  FOREIGN KEY (MatchID) REFERENCES `Match`(MatchID),
+  FOREIGN KEY (PlayerID) REFERENCES Player(PlayerID),
+  FOREIGN KEY (TeamID) REFERENCES Team(TeamID)
+)
+
+
+
