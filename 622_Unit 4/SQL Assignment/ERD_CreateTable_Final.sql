@@ -1,3 +1,6 @@
+CREATE DATABASE All_T20_Internationals_Dataset_2005_2023;
+USE All_T20_Internationals_Dataset_2005_2023;
+
 CREATE TABLE Player (
   PlayerID INT NOT NULL AUTO_INCREMENT,
   PlayerName VARCHAR(50) NOT NULL,
